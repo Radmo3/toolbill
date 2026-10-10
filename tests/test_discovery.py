@@ -23,6 +23,20 @@ def test_client_config_fixtures_parse(fixture_dir, filename, client, server_name
     assert parsed[0].transport == "stdio"
 
 
+def test_example_reference_servers_config_is_moved_and_parseable():
+    from pathlib import Path
+
+    config = Path(__file__).parents[1] / "examples" / "reference-servers.json"
+    servers = parse_config(config)
+
+    assert {server.name for server in servers} == {
+        "filesystem",
+        "memory",
+        "everything",
+        "sequential-thinking",
+    }
+
+
 def test_http_servers_are_recognized(fixture_dir):
     servers = parse_config(fixture_dir / "claude_code.json")
 

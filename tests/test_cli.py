@@ -96,9 +96,17 @@ def test_report_tables_align_long_names_and_limit_to_ten_by_default(capsys):
         "10 heaviest tools (of 12 total; use --all-tools to see all)" in lines
     )
     assert "Counted with o200k_base. This cost is paid on every turn." in lines
+    footer_index = lines.index(
+        "Counted with o200k_base. This cost is paid on every turn."
+    )
+    assert lines[footer_index + 1] == ""
+    assert lines[footer_index + 2] == (
+        "10 heaviest tools (of 12 total; use --all-tools to see all)"
+    )
     detail_header_index = next(
         index for index, line in enumerate(lines) if "ANNOTATIONS" in line
     )
+    assert detail_header_index == footer_index + 3
     detail_lines = lines[detail_header_index + 1 :]
     assert len(detail_lines) == 10
     assert "a_very_long_tool_name_that_must_not_be_truncated_or_run_into_tokens" in output

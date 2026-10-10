@@ -24,15 +24,25 @@ Cursor, and VS Code, and starts their configured stdio servers. The official
 [`mcp` Python SDK](https://github.com/modelcontextprotocol/python-sdk) handles
 the stdio connection and MCP protocol.
 
-Use `--dry-run` to see which servers would be launched without running them:
+Example audit summary:
 
 ```text
-$ toolbill audit --dry-run
-SERVER                 CLIENT         ACTION    LAUNCH
-github                 Claude Code    LAUNCH    npx -y github-mcp-server
-hosted-docs            Claude Code    SKIP      https://mcp.example.com/mcp
+SERVER               STATUS  TOOLS  TOKENS  % OF TOTAL  HEAVIEST TOOL
+filesystem           OK         14   2,852       35.7%  read_media_file (294 tokens)
+memory               OK          9   2,408       30.1%  search_nodes (327 tokens)
+everything           OK         13   1,729       21.6%  gzip-file-as-resource (249 tokens)
+sequential-thinking  OK          1   1,005       12.6%  sequentialthinking (1,005 tokens)
+TOTAL                           37   7,994      100.0%  sequentialthinking (1,005 tokens)
 ```
 
+Measured on 2026-10-10 against the latest published versions of the four
+official reference servers. Run the command yourself to reproduce:
+
+```bash
+toolbill audit --config examples/reference-servers.json --timeout 60
+```
+
+Use `--dry-run` to see which servers would be launched without running them.
 HTTP servers are listed as `SKIP`; HTTP transport is not supported in this
 release. Command arguments and URL credentials are redacted in dry-run output.
 Environment variable values are never displayed.
