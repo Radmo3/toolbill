@@ -61,6 +61,10 @@ def discover_configs(
 def parse_config(path: str | Path, *, client: str | None = None) -> list[ServerConfig]:
     """Read a supported JSON MCP config and return its servers."""
     config_path = Path(path).expanduser()
+    if config_path.is_dir():
+        raise ValueError(
+            f"{config_path} is a directory; expected a JSON config file."
+        )
     try:
         raw = json.loads(config_path.read_text(encoding="utf-8"))
     except (OSError, UnicodeError, json.JSONDecodeError) as exc:

@@ -43,6 +43,16 @@ fails to list tools gets a `FAILED` row; the audit continues with other
 servers. Server stderr is suppressed unless `--verbose` is passed. Failed
 servers make the CLI exit with status 1.
 
+The summary includes each server's share of total tokens and its heaviest
+tool. The tool table shows the 10 heaviest tools overall by default. Use
+`--all-tools` to show every tool, or `--json` to print the full report (all
+servers and tools) as JSON:
+
+```bash
+toolbill audit --all-tools
+toolbill audit --json
+```
+
 To audit a specific config file instead of the discovered configs:
 
 ```bash

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import json
 from pathlib import Path
 from typing import Sequence
 
@@ -35,6 +36,8 @@ def build_parser() -> argparse.ArgumentParser:
     audit.add_argument("--timeout", type=float, default=15.0)
     audit.add_argument("--model", choices=("openai",), default="openai")
     audit.add_argument("--dry-run", action="store_true")
+    audit.add_argument("--all-tools", action="store_true")
+    audit.add_argument("--json", action="store_true", dest="json_output")
     audit.add_argument(
         "--verbose",
         action="store_true",
@@ -53,9 +56,11 @@ def main(argv: Sequence[str] | None = None) -> int:
     servers: list[ServerConfig] = []
     try:
         for path in paths:
-            servers.extend(parse_config(path))
+            servers.extend(
+                parse_config(path, client="config file" if options.config else None)
+            )
     except ValueError as exc:
-        print(f"toolbill: {sanitize_argument(str(exc))}")
+        print(sanitize_argument(str(exc)))
         return 2
 
     if options.dry_run:
@@ -70,37 +75,147 @@ def main(argv: Sequence[str] | None = None) -> int:
             verbose=options.verbose,
         )
     )
-    print_report(report)
+    if options.json_output:
+        print(json.dumps(_report_as_dict(report), indent=2, ensure_ascii=False))
+    else:
+        print_report(report, all_tools=options.all_tools)
     return 1 if any(server.status == "failed" for server in report.servers) else 0
 
 
-def print_report(report: AuditReport) -> None:
-    print("SERVER                 STATUS    TOOLS      TOKENS")
+def print_report(report: AuditReport, *, all_tools: bool = False) -> None:
+    summary_rows: list[list[str]] = []
     for server in report.servers:
-        print(
-            f"{sanitize_argument(server.name)[:20]:<20} {server.status.upper():<9} "
-            f"{server.tool_count:>5} {server.tokens:>10,}"
+        heaviest = server.heaviest(1)
+        heaviest_label = (
+            f"{heaviest[0].name} ({heaviest[0].tokens:,} tokens)"
+            if heaviest
+            else "-"
+        )
+        summary_rows.append(
+            [
+                sanitize_argument(server.name),
+                server.status.upper(),
+                f"{server.tool_count:,}",
+                f"{server.tokens:,}",
+                f"{server.share:.1%}",
+                sanitize_argument(heaviest_label),
+            ]
         )
         if server.error:
-            print(f"  {server.error}")
-    print("-" * 53)
-    print(f"TOTAL                                  {report.total_tokens:>10,}")
-    print()
-    print(
-        "SERVER                 TOOL                          TOKENS "
-        "DESCRIPTION  SCHEMA  ANNOTATIONS"
+            summary_rows[-1].append(server.error)
+
+    headers = ["SERVER", "STATUS", "TOOLS", "TOKENS", "% OF TOTAL", "HEAVIEST TOOL"]
+    if any(len(row) > len(headers) for row in summary_rows):
+        headers.append("DETAIL")
+    total_tools = [
+        (server, tool)
+        for server in report.servers
+        for tool in server.tools
+    ]
+    total_heaviest = max(
+        (tool for _, tool in total_tools),
+        key=lambda tool: tool.tokens,
+        default=None,
     )
-    for server in report.servers:
-        for tool in server.tools:
-            breakdown = tool.breakdown
-            print(
-                f"{sanitize_argument(server.name)[:20]:<20} "
-                f"{sanitize_argument(tool.name)[:28]:<28} "
-                f"{tool.tokens:>7,} "
-                f"{breakdown.get('description', 0):>11,} "
-                f"{breakdown.get('schema', 0):>7,} "
-                f"{breakdown.get('annotations', 0):>11,}"
-            )
+    summary_rows.append(
+        [
+            "TOTAL",
+            "",
+            f"{report.tool_count:,}",
+            f"{report.total_tokens:,}",
+            "100.0%" if report.total_tokens else "0.0%",
+            (
+                f"{total_heaviest.name} ({total_heaviest.tokens:,} tokens)"
+                if total_heaviest
+                else "-"
+            ),
+        ]
+    )
+    _print_table(
+        headers,
+        summary_rows,
+        right_align={2, 3, 4},
+    )
+    print()
+    tools = sorted(
+        total_tools,
+        key=lambda item: item[1].tokens,
+        reverse=True,
+    )
+    if not all_tools:
+        tools = tools[:10]
+    tool_rows = [
+        [
+            sanitize_argument(server.name),
+            sanitize_argument(tool.name),
+            f"{tool.tokens:,}",
+            f"{tool.breakdown.get('description', 0):,}",
+            f"{tool.breakdown.get('schema', 0):,}",
+            f"{tool.breakdown.get('annotations', 0):,}",
+        ]
+        for server, tool in tools
+    ]
+    _print_table(
+        ["SERVER", "TOOL", "TOKENS", "DESCRIPTION", "SCHEMA", "ANNOTATIONS"],
+        tool_rows,
+        right_align={2, 3, 4, 5},
+    )
+
+
+def _print_table(
+    headers: list[str],
+    rows: list[list[str]],
+    *,
+    right_align: set[int],
+) -> None:
+    widths = [
+        max(
+            [
+                len(headers[index]),
+                *(len(row[index]) for row in rows if index < len(row)),
+            ]
+        )
+        for index in range(len(headers))
+    ]
+
+    def format_row(row: list[str]) -> str:
+        cells = []
+        for index, width in enumerate(widths):
+            value = row[index] if index < len(row) else ""
+            cells.append(value.rjust(width) if index in right_align else value.ljust(width))
+        return "  ".join(cells).rstrip()
+
+    print(format_row(headers))
+    for row in rows:
+        print(format_row(row))
+
+
+def _report_as_dict(report: AuditReport) -> dict[str, object]:
+    return {
+        "total_tokens": report.total_tokens,
+        "tool_count": report.tool_count,
+        "servers": [
+            {
+                "name": server.name,
+                "tokens": server.tokens,
+                "tool_count": server.tool_count,
+                "share": server.share,
+                "status": server.status,
+                "error": server.error,
+                "client": server.client,
+                "source": server.source,
+                "tools": [
+                    {
+                        "name": tool.name,
+                        "tokens": tool.tokens,
+                        "breakdown": tool.breakdown,
+                    }
+                    for tool in server.tools
+                ],
+            }
+            for server in report.servers
+        ],
+    }
 
 
 def _print_dry_run(servers: Sequence[ServerConfig]) -> None:
