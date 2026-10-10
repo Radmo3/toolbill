@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "code-local": {
+      "type": "stdio",
+      "command": "python",
+      "args": ["server.py"]
+    },
+    "code-remote": {
+      "type": "http",
+      "url": "https://example.com/mcp"
+    }
+  }
+}

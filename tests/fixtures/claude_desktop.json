@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "desktop-local": {
+      "command": "python",
+      "args": ["server.py"],
+      "env": {
+        "API_TOKEN": "fixture-secret"
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "servers": {
+    "vscode-local": {
+      "type": "stdio",
+      "command": "python",
+      "args": ["server.py"]
+    }
+  }
+}

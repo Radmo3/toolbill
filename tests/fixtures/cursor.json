@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "cursor-local": {
+      "command": "python",
+      "args": ["server.py"],
+      "env": {
+        "CURSOR_KEY": "cursor-fixture-secret"
+      }
+    }
+  }
+}
