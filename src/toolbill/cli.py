@@ -136,6 +136,7 @@ def print_report(report: AuditReport, *, all_tools: bool = False) -> None:
         summary_rows,
         right_align={2, 3, 4},
     )
+    print("Counted with o200k_base. This cost is paid on every turn.")
     print()
     tools = sorted(
         total_tools,
@@ -144,6 +145,13 @@ def print_report(report: AuditReport, *, all_tools: bool = False) -> None:
     )
     if not all_tools:
         tools = tools[:10]
+    if all_tools:
+        print(f"All tools ({len(total_tools)} total)")
+    else:
+        print(
+            f"10 heaviest tools (of {len(total_tools)} total; "
+            "use --all-tools to see all)"
+        )
     tool_rows = [
         [
             sanitize_argument(server.name),

@@ -92,6 +92,10 @@ def test_report_tables_align_long_names_and_limit_to_ten_by_default(capsys):
 
     output = capsys.readouterr().out
     lines = output.splitlines()
+    assert (
+        "10 heaviest tools (of 12 total; use --all-tools to see all)" in lines
+    )
+    assert "Counted with o200k_base. This cost is paid on every turn." in lines
     detail_header_index = next(
         index for index, line in enumerate(lines) if "ANNOTATIONS" in line
     )
@@ -116,6 +120,7 @@ def test_all_tools_displays_full_list(capsys):
 
     output = capsys.readouterr().out
     lines = output.splitlines()
+    assert "All tools (12 total)" in lines
     detail_header_index = next(
         index for index, line in enumerate(lines) if "ANNOTATIONS" in line
     )
