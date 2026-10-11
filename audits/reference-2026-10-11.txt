@@ -1,0 +1,47 @@
+SERVER               STATUS  TOOLS  TOKENS  % OF TOTAL  HEAVIEST TOOL
+filesystem           OK         14   2,908       35.8%  read_media_file (298 tokens)
+memory               OK          9   2,479       30.5%  create_entities (363 tokens)
+everything           OK         13   1,729       21.3%  gzip-file-as-resource (249 tokens)
+sequential-thinking  OK          1   1,005       12.4%  sequentialthinking (1,005 tokens)
+TOTAL                           37   8,121      100.0%  sequentialthinking (1,005 tokens)
+Counted with o200k_base. This cost is paid on every turn.
+
+All tools (37 total)
+SERVER               TOOL                            TOKENS  DESCRIPTION  SCHEMA  ANNOTATIONS
+sequential-thinking  sequentialthinking               1,005          565     373           26
+memory               create_entities                    363           59     255           26
+memory               search_nodes                       333           11     272           26
+memory               open_nodes                         326           10     266           26
+filesystem           read_media_file                    298           47     213           13
+memory               create_relations                   298           17     230           26
+memory               read_graph                         294            5     239           26
+filesystem           read_text_file                     262           97     127           13
+memory               add_observations                   254           10     191           26
+filesystem           edit_file                          252           35     168           26
+everything           gzip-file-as-resource              249           45     149           26
+memory               delete_relations                   228            7     170           26
+filesystem           search_files                       225           79     110           13
+filesystem           read_multiple_files                215           58     119           13
+memory               delete_observations                215            9     153           26
+filesystem           directory_tree                     209           72     101           13
+filesystem           list_directory_with_sizes          207           56     111           13
+filesystem           move_file                          198           57      92           26
+everything           get-structured-content             197           12     131           26
+filesystem           read_file                          185           19     127           13
+filesystem           create_directory                   183           51      83           26
+filesystem           write_file                         180           39      92           26
+everything           simulate-research-query            176           49      75           26
+filesystem           list_directory                     172           53      83           13
+filesystem           get_file_info                      168           47      83           13
+memory               delete_entities                    168           11     107           26
+filesystem           list_allowed_directories           154           41      73           13
+everything           get-annotated-message              149           14      80           26
+everything           get-resource-reference             130           11      66           26
+everything           trigger-long-running-operation     130           11      65           26
+everything           get-resource-links                 123           12      58           26
+everything           get-sum                            114            6      56           26
+everything           echo                                98            6      43           26
+everything           toggle-simulated-logging            96           14      27           26
+everything           toggle-subscriber-updates           91           11      27           26
+everything           get-env                             89           11      27           26
+everything           get-tiny-image                      87            7      27           26

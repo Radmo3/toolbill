@@ -1,0 +1,387 @@
+{
+  "total_tokens": 8121,
+  "tool_count": 37,
+  "servers": [
+    {
+      "name": "filesystem",
+      "tokens": 2908,
+      "tool_count": 14,
+      "share": 0.35808397980544265,
+      "status": "ok",
+      "error": null,
+      "client": "config file",
+      "source": "examples/reference-servers.json",
+      "tools": [
+        {
+          "name": "read_media_file",
+          "tokens": 298,
+          "breakdown": {
+            "description": 47,
+            "schema": 213,
+            "annotations": 13
+          }
+        },
+        {
+          "name": "read_text_file",
+          "tokens": 262,
+          "breakdown": {
+            "description": 97,
+            "schema": 127,
+            "annotations": 13
+          }
+        },
+        {
+          "name": "edit_file",
+          "tokens": 252,
+          "breakdown": {
+            "description": 35,
+            "schema": 168,
+            "annotations": 26
+          }
+        },
+        {
+          "name": "search_files",
+          "tokens": 225,
+          "breakdown": {
+            "description": 79,
+            "schema": 110,
+            "annotations": 13
+          }
+        },
+        {
+          "name": "read_multiple_files",
+          "tokens": 215,
+          "breakdown": {
+            "description": 58,
+            "schema": 119,
+            "annotations": 13
+          }
+        },
+        {
+          "name": "directory_tree",
+          "tokens": 209,
+          "breakdown": {
+            "description": 72,
+            "schema": 101,
+            "annotations": 13
+          }
+        },
+        {
+          "name": "list_directory_with_sizes",
+          "tokens": 207,
+          "breakdown": {
+            "description": 56,
+            "schema": 111,
+            "annotations": 13
+          }
+        },
+        {
+          "name": "move_file",
+          "tokens": 198,
+          "breakdown": {
+            "description": 57,
+            "schema": 92,
+            "annotations": 26
+          }
+        },
+        {
+          "name": "read_file",
+          "tokens": 185,
+          "breakdown": {
+            "description": 19,
+            "schema": 127,
+            "annotations": 13
+          }
+        },
+        {
+          "name": "create_directory",
+          "tokens": 183,
+          "breakdown": {
+            "description": 51,
+            "schema": 83,
+            "annotations": 26
+          }
+        },
+        {
+          "name": "write_file",
+          "tokens": 180,
+          "breakdown": {
+            "description": 39,
+            "schema": 92,
+            "annotations": 26
+          }
+        },
+        {
+          "name": "list_directory",
+          "tokens": 172,
+          "breakdown": {
+            "description": 53,
+            "schema": 83,
+            "annotations": 13
+          }
+        },
+        {
+          "name": "get_file_info",
+          "tokens": 168,
+          "breakdown": {
+            "description": 47,
+            "schema": 83,
+            "annotations": 13
+          }
+        },
+        {
+          "name": "list_allowed_directories",
+          "tokens": 154,
+          "breakdown": {
+            "description": 41,
+            "schema": 73,
+            "annotations": 13
+          }
+        }
+      ]
+    },
+    {
+      "name": "memory",
+      "tokens": 2479,
+      "tool_count": 9,
+      "share": 0.30525797315601527,
+      "status": "ok",
+      "error": null,
+      "client": "config file",
+      "source": "examples/reference-servers.json",
+      "tools": [
+        {
+          "name": "create_entities",
+          "tokens": 363,
+          "breakdown": {
+            "description": 59,
+            "schema": 255,
+            "annotations": 26
+          }
+        },
+        {
+          "name": "search_nodes",
+          "tokens": 333,
+          "breakdown": {
+            "description": 11,
+            "schema": 272,
+            "annotations": 26
+          }
+        },
+        {
+          "name": "open_nodes",
+          "tokens": 326,
+          "breakdown": {
+            "description": 10,
+            "schema": 266,
+            "annotations": 26
+          }
+        },
+        {
+          "name": "create_relations",
+          "tokens": 298,
+          "breakdown": {
+            "description": 17,
+            "schema": 230,
+            "annotations": 26
+          }
+        },
+        {
+          "name": "read_graph",
+          "tokens": 294,
+          "breakdown": {
+            "description": 5,
+            "schema": 239,
+            "annotations": 26
+          }
+        },
+        {
+          "name": "add_observations",
+          "tokens": 254,
+          "breakdown": {
+            "description": 10,
+            "schema": 191,
+            "annotations": 26
+          }
+        },
+        {
+          "name": "delete_relations",
+          "tokens": 228,
+          "breakdown": {
+            "description": 7,
+            "schema": 170,
+            "annotations": 26
+          }
+        },
+        {
+          "name": "delete_observations",
+          "tokens": 215,
+          "breakdown": {
+            "description": 9,
+            "schema": 153,
+            "annotations": 26
+          }
+        },
+        {
+          "name": "delete_entities",
+          "tokens": 168,
+          "breakdown": {
+            "description": 11,
+            "schema": 107,
+            "annotations": 26
+          }
+        }
+      ]
+    },
+    {
+      "name": "everything",
+      "tokens": 1729,
+      "tool_count": 13,
+      "share": 0.21290481467799532,
+      "status": "ok",
+      "error": null,
+      "client": "config file",
+      "source": "examples/reference-servers.json",
+      "tools": [
+        {
+          "name": "gzip-file-as-resource",
+          "tokens": 249,
+          "breakdown": {
+            "description": 45,
+            "schema": 149,
+            "annotations": 26
+          }
+        },
+        {
+          "name": "get-structured-content",
+          "tokens": 197,
+          "breakdown": {
+            "description": 12,
+            "schema": 131,
+            "annotations": 26
+          }
+        },
+        {
+          "name": "simulate-research-query",
+          "tokens": 176,
+          "breakdown": {
+            "description": 49,
+            "schema": 75,
+            "annotations": 26
+          }
+        },
+        {
+          "name": "get-annotated-message",
+          "tokens": 149,
+          "breakdown": {
+            "description": 14,
+            "schema": 80,
+            "annotations": 26
+          }
+        },
+        {
+          "name": "get-resource-reference",
+          "tokens": 130,
+          "breakdown": {
+            "description": 11,
+            "schema": 66,
+            "annotations": 26
+          }
+        },
+        {
+          "name": "trigger-long-running-operation",
+          "tokens": 130,
+          "breakdown": {
+            "description": 11,
+            "schema": 65,
+            "annotations": 26
+          }
+        },
+        {
+          "name": "get-resource-links",
+          "tokens": 123,
+          "breakdown": {
+            "description": 12,
+            "schema": 58,
+            "annotations": 26
+          }
+        },
+        {
+          "name": "get-sum",
+          "tokens": 114,
+          "breakdown": {
+            "description": 6,
+            "schema": 56,
+            "annotations": 26
+          }
+        },
+        {
+          "name": "echo",
+          "tokens": 98,
+          "breakdown": {
+            "description": 6,
+            "schema": 43,
+            "annotations": 26
+          }
+        },
+        {
+          "name": "toggle-simulated-logging",
+          "tokens": 96,
+          "breakdown": {
+            "description": 14,
+            "schema": 27,
+            "annotations": 26
+          }
+        },
+        {
+          "name": "toggle-subscriber-updates",
+          "tokens": 91,
+          "breakdown": {
+            "description": 11,
+            "schema": 27,
+            "annotations": 26
+          }
+        },
+        {
+          "name": "get-env",
+          "tokens": 89,
+          "breakdown": {
+            "description": 11,
+            "schema": 27,
+            "annotations": 26
+          }
+        },
+        {
+          "name": "get-tiny-image",
+          "tokens": 87,
+          "breakdown": {
+            "description": 7,
+            "schema": 27,
+            "annotations": 26
+          }
+        }
+      ]
+    },
+    {
+      "name": "sequential-thinking",
+      "tokens": 1005,
+      "tool_count": 1,
+      "share": 0.12375323236054674,
+      "status": "ok",
+      "error": null,
+      "client": "config file",
+      "source": "examples/reference-servers.json",
+      "tools": [
+        {
+          "name": "sequentialthinking",
+          "tokens": 1005,
+          "breakdown": {
+            "description": 565,
+            "schema": 373,
+            "annotations": 26
+          }
+        }
+      ]
+    }
+  ]
+}
