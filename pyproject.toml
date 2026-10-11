@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "toolbill"
-version = "0.1.1"
+version = "0.1.2"
 description = "Measure the token cost of MCP server tool definitions."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -35,6 +35,12 @@ test = [
   "pytest>=8.0",
   "pytest-asyncio>=0.24",
 ]
+
+[project.urls]
+Homepage = "https://github.com/Radmo3/toolbill"
+Repository = "https://github.com/Radmo3/toolbill"
+Issues = "https://github.com/Radmo3/toolbill/issues"
+Changelog = "https://github.com/Radmo3/toolbill/blob/main/CHANGELOG.md"
 
 [project.scripts]
 toolbill = "toolbill.cli:main"

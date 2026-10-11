@@ -6,7 +6,7 @@ context window.**
 [![PyPI](https://img.shields.io/pypi/v/toolbill.svg)](https://pypi.org/project/toolbill/)
 [![CI](https://github.com/Radmo3/toolbill/actions/workflows/ci.yml/badge.svg)](https://github.com/Radmo3/toolbill/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/pypi/pyversions/toolbill.svg)](https://pypi.org/project/toolbill/)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Radmo3/toolbill/blob/main/LICENSE)
 
 ## Why
 
@@ -142,7 +142,7 @@ provider framing overhead is not included.
 
 ## Configuration discovery and safety
 
-The config fixtures in [tests/fixtures](tests/fixtures) follow the documented
+The config fixtures in [tests/fixtures](https://github.com/Radmo3/toolbill/tree/main/tests/fixtures) follow the documented
 formats for each supported client:
 
 | Client | Config format and discovery locations | Current reference |
@@ -170,9 +170,9 @@ pytest
 ```
 
 The GitHub Actions workflow runs the test suite on supported Python versions.
-See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines and
-[CHANGELOG.md](CHANGELOG.md) for release notes.
+See [CONTRIBUTING.md](https://github.com/Radmo3/toolbill/blob/main/CONTRIBUTING.md) for guidelines and
+[CHANGELOG.md](https://github.com/Radmo3/toolbill/blob/main/CHANGELOG.md) for release notes.
 
 ## License
 
-MIT. See [LICENSE](LICENSE).
+MIT. See [LICENSE](https://github.com/Radmo3/toolbill/blob/main/LICENSE).
