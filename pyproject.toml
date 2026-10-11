@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "toolbill"
-version = "0.1.2"
+version = "0.1.3"
 description = "Measure the token cost of MCP server tool definitions."
 readme = "README.md"
 requires-python = ">=3.10"
