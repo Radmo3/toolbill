@@ -1,5 +1,8 @@
 import json
 
+import pytest
+
+from toolbill import TokenizerUnavailableError
 from toolbill.tokenizers import (
     TiktokenTokenizer,
     canonical_json,
@@ -52,3 +55,15 @@ def test_tiktoken_uses_o200k_base():
 
     assert tokenizer.name == "o200k_base"
     assert tokenizer.count("hello") > 0
+
+
+def test_tiktoken_hash_mismatch_raises_tokenizer_unavailable(monkeypatch):
+    import tiktoken
+
+    def blocked_by_proxy(name):
+        raise ValueError("Hash mismatch for data downloaded")
+
+    monkeypatch.setattr(tiktoken, "get_encoding", blocked_by_proxy)
+
+    with pytest.raises(TokenizerUnavailableError):
+        TiktokenTokenizer()

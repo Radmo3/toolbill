@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import asyncio
 import json
+import sys
 from pathlib import Path
 from typing import Sequence
 
@@ -18,6 +19,7 @@ from toolbill.discovery import (
     sanitize_url,
 )
 from toolbill.models import AuditReport
+from toolbill.tokenizers import TiktokenTokenizer, TokenizerUnavailableError
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -91,12 +93,21 @@ def main(argv: Sequence[str] | None = None) -> int:
         _print_dry_run(servers)
         return 0
 
+    # Load the tokenizer before launching any server, so a failed download
+    # is reported once instead of as a traceback mid-audit.
+    try:
+        tokenizer = TiktokenTokenizer()
+    except TokenizerUnavailableError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
+
     report = asyncio.run(
         audit_configs(
             servers,
             model=options.model,
             timeout=options.timeout,
             verbose=options.verbose,
+            tokenizer=tokenizer,
         )
     )
     if options.json_output:

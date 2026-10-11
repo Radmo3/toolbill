@@ -183,3 +183,38 @@ def test_audit_help_describes_every_option(capsys):
     audit = build_parser()._subparsers._group_actions[0].choices["audit"]
     for action in audit._actions:
         assert action.help, f"{action.option_strings} has no help text"
+
+
+def test_tokenizer_download_failure_prints_one_line(tmp_path, capsys, monkeypatch):
+    import tiktoken
+
+    def offline(name):
+        raise ConnectionError("Failed to resolve openaipublic.blob.core.windows.net")
+
+    monkeypatch.setattr(tiktoken, "get_encoding", offline)
+    marker = tmp_path / "started"
+    config = tmp_path / "mcp.json"
+    config.write_text(
+        json.dumps(
+            {
+                "mcpServers": {
+                    "local": {
+                        "command": sys.executable,
+                        "args": ["-c", f"open({str(marker)!r}, 'w')"],
+                    }
+                }
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    exit_code = main(["audit", "--config", str(config)])
+
+    captured = capsys.readouterr()
+    assert exit_code == 1
+    assert captured.out == ""
+    assert len(captured.err.splitlines()) == 1
+    assert "Could not download the o200k_base tokenizer file" in captured.err
+    assert "TIKTOKEN_CACHE_DIR" in captured.err
+    assert "Traceback" not in captured.err
+    assert not marker.exists()

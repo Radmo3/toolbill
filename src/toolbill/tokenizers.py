@@ -14,6 +14,10 @@ class Tokenizer(Protocol):
     def count(self, text: str) -> int: ...
 
 
+class TokenizerUnavailableError(RuntimeError):
+    """Raised when the tokenizer's encoding file cannot be loaded."""
+
+
 class TiktokenTokenizer:
     """OpenAI-compatible token counter using the o200k_base encoding."""
 
@@ -22,7 +26,18 @@ class TiktokenTokenizer:
     def __init__(self) -> None:
         import tiktoken
 
-        self._encoding = tiktoken.get_encoding(self.name)
+        try:
+            self._encoding = tiktoken.get_encoding(self.name)
+        except (OSError, ValueError) as exc:
+            # tiktoken downloads the encoding on first use. Network and proxy
+            # failures surface as OSError (requests errors subclass it), and a
+            # proxy that returns the wrong content fails the hash check.
+            raise TokenizerUnavailableError(
+                f"Could not download the {self.name} tokenizer file "
+                "(no network access or blocked by a proxy). Allow access to "
+                "openaipublic.blob.core.windows.net, or set TIKTOKEN_CACHE_DIR "
+                "to a directory that already contains the cached file."
+            ) from exc
 
     def count(self, text: str) -> int:
         return len(self._encoding.encode(text))
