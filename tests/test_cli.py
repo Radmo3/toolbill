@@ -175,3 +175,11 @@ def test_directory_config_has_plain_error(tmp_path, capsys):
     assert capsys.readouterr().out.strip() == (
         f"{directory} is a directory; expected a JSON config file."
     )
+
+
+def test_audit_help_describes_every_option(capsys):
+    from toolbill.cli import build_parser
+
+    audit = build_parser()._subparsers._group_actions[0].choices["audit"]
+    for action in audit._actions:
+        assert action.help, f"{action.option_strings} has no help text"

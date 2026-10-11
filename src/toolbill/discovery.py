@@ -199,7 +199,9 @@ def _client_for(path: Path) -> str:
         return "MCP portable"
     if ".cursor/" in text:
         return "Cursor"
-    if ".vscode/" in text or ".copilot/" in text:
+    if path.name == "mcp-config.json":
+        return "Copilot CLI"
+    if ".vscode/" in text:
         return "VS Code"
     return "MCP config"
 

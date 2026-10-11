@@ -8,6 +8,20 @@ context window.**
 [![Python](https://img.shields.io/pypi/pyversions/toolbill.svg)](https://pypi.org/project/toolbill/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
+## Why
+
+Every MCP tool definition (its name, description, and JSON schema) is sent
+to the model on every turn, whether or not the tool is used. Most clients
+never show you how much that costs.
+
+Four small reference servers add up to 7,994 tokens per turn. One tool
+alone, `sequentialthinking`, accounts for 1,005 of them, and more than
+half of that is its description.
+
+`toolbill` shows you the bill: per server, per tool, and split into
+description, schema, and annotations, so you know what to trim or disable.
+It only measures. It never proxies, rewrites, or changes your setup.
+
 `toolbill` is a read-only Python CLI and library for auditing MCP server tool
 definitions. It discovers supported local client configurations, starts local
 stdio servers, calls `tools/list`, and reports total and per-tool token counts.
@@ -20,7 +34,7 @@ toolbill audit
 ```
 
 By default, `audit` discovers MCP configs for Claude Desktop, Claude Code,
-Cursor, and VS Code, and starts their configured stdio servers. The official
+Cursor, VS Code, and GitHub Copilot CLI, and starts their configured stdio servers. The official
 [`mcp` Python SDK](https://github.com/modelcontextprotocol/python-sdk) handles
 the stdio connection and MCP protocol.
 
@@ -136,7 +150,8 @@ formats for each supported client:
 | Claude Desktop | `mcpServers`; platform config (`claude_desktop_config.json`) | [Local MCP servers](https://support.claude.com/en/articles/10949351-getting-started-with-local-mcp-servers-on-claude-desktop) |
 | Claude Code | `mcpServers`; `~/.claude.json` | [MCP reference](https://code.claude.com/docs/en/mcp) |
 | Cursor | `mcpServers`; `~/.cursor/mcp.json` and project `.cursor/mcp.json` | [Cursor MCP docs — configuration format and locations](https://cursor.com/docs/mcp) |
-| VS Code | `servers`; `$COPILOT_HOME/mcp-config.json` (default `~/.copilot/mcp-config.json`), user profile `mcp.json`, and workspace `.vscode/mcp.json` | [Configuration reference](https://code.visualstudio.com/docs/agents/reference/mcp-configuration) |
+| VS Code | `servers`; user profile `mcp.json` and workspace `.vscode/mcp.json` | [Configuration reference](https://code.visualstudio.com/docs/agents/reference/mcp-configuration) |
+| GitHub Copilot CLI | `mcpServers`; `$COPILOT_HOME/mcp-config.json` (default `~/.copilot/mcp-config.json`) | [Copilot CLI configuration directory](https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-config-dir-reference) |
 
 The portable workspace `.mcp.json` format (`mcpServers`) is also discovered
 once and labeled `MCP portable`, since more than one client can read it.
@@ -155,6 +170,8 @@ pytest
 ```
 
 The GitHub Actions workflow runs the test suite on supported Python versions.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines and
+[CHANGELOG.md](CHANGELOG.md) for release notes.
 
 ## License
 

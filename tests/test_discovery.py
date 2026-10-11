@@ -123,3 +123,19 @@ def test_malformed_url_is_fully_redacted():
     from toolbill.discovery import sanitize_url
 
     assert sanitize_url("https://user:secret@example.com:invalid/path") == "[REDACTED URL]"
+
+
+def test_copilot_cli_config_is_labeled_copilot_cli(tmp_path, monkeypatch):
+    copilot_home = tmp_path / "custom-copilot"
+    monkeypatch.setenv("COPILOT_HOME", str(copilot_home))
+    config = copilot_home / "mcp-config.json"
+    config.parent.mkdir()
+    config.write_text(
+        json.dumps({"mcpServers": {"local": {"type": "local", "command": "python"}}}),
+        encoding="utf-8",
+    )
+
+    assert discover_configs(home=tmp_path / "home", cwd=tmp_path) == [config]
+    servers = parse_config(config)
+    assert servers[0].client == "Copilot CLI"
+    assert servers[0].transport == "stdio"

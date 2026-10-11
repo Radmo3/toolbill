@@ -33,11 +33,35 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         help="audit a config file instead of discovered client configs (repeatable)",
     )
-    audit.add_argument("--timeout", type=float, default=15.0)
-    audit.add_argument("--model", choices=("openai",), default="openai")
-    audit.add_argument("--dry-run", action="store_true")
-    audit.add_argument("--all-tools", action="store_true")
-    audit.add_argument("--json", action="store_true", dest="json_output")
+    audit.add_argument(
+        "--timeout",
+        type=float,
+        default=15.0,
+        metavar="SECONDS",
+        help="per-server timeout in seconds (default: 15)",
+    )
+    audit.add_argument(
+        "--model",
+        choices=("openai",),
+        default="openai",
+        help="tokenizer to count with; openai uses o200k_base (default: openai)",
+    )
+    audit.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="list the servers that would be launched without starting them",
+    )
+    audit.add_argument(
+        "--all-tools",
+        action="store_true",
+        help="show every tool instead of the 10 heaviest",
+    )
+    audit.add_argument(
+        "--json",
+        action="store_true",
+        dest="json_output",
+        help="print the full report (all servers and tools) as JSON",
+    )
     audit.add_argument(
         "--verbose",
         action="store_true",

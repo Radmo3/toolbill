@@ -105,7 +105,7 @@ async def test_http_server_is_reported_as_skipped(tmp_path):
     report = await audit_config(config)
 
     assert report["remote"].status == "skipped"
-    assert report["remote"].error == "HTTP transport is not supported in v0.1.0"
+    assert report["remote"].error == "HTTP transport is not supported in this release"
     assert report.total_tokens == 0
 
 

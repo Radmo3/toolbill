@@ -32,7 +32,7 @@ async def audit_server(
 ) -> ServerReport:
     """Audit one MCP server using the official SDK's stdio transport."""
     if model != "openai":
-        raise ValueError("Only the openai tokenizer is supported in v0.1.0")
+        raise ValueError("Only the openai tokenizer is supported in this release")
     server_name = name or command
     if timeout <= 0:
         raise ValueError("timeout must be greater than zero")
@@ -165,7 +165,7 @@ async def _audit_configs(
     tokenizer: Tokenizer | None,
 ) -> list[ServerReport]:
     if model != "openai":
-        raise ValueError("Only the openai tokenizer is supported in v0.1.0")
+        raise ValueError("Only the openai tokenizer is supported in this release")
     if timeout <= 0:
         raise ValueError("timeout must be greater than zero")
     reports: list[ServerReport] = []
@@ -175,7 +175,7 @@ async def _audit_configs(
                 ServerReport(
                     name=server.name,
                     status="skipped",
-                    error="HTTP transport is not supported in v0.1.0",
+                    error="HTTP transport is not supported in this release",
                     client=server.client,
                     source=server.source,
                 )
